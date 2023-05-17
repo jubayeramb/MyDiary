@@ -1,60 +1,78 @@
 package GUI.pages;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import GUI.components.MyButton;
 import data.interfaces.IAppNavigation;
 
 public class WelcomePage extends JPanel {
     private IAppNavigation appNavigation;
+    private JLabel imageLabel;
 
-    public WelcomePage(IAppNavigation _appNavigation) {
-        appNavigation = _appNavigation;
+    public WelcomePage(IAppNavigation appNavigation) {
+        this.appNavigation = appNavigation;
 
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
-        // Create constraints for center alignment
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.weighty = 1.0;
-        constraints.anchor = GridBagConstraints.CENTER;
+        // Create the welcome label
+        JLabel welcomeLabel = new JLabel("My Diary!");
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 36));
+        welcomeLabel.setForeground(Color.DARK_GRAY);
+        welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
+        welcomeLabel.setVerticalAlignment(JLabel.CENTER);
 
-        // Create a panel for the welcome message
-        JPanel welcomePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JLabel welcomeLabel = new JLabel("Welcome to My Diary!");
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        welcomePanel.add(welcomeLabel);
+        // Create the image label
+        imageLabel = new JLabel();
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/images/diary1.png"));
+        imageLabel.setIcon(imageIcon);
 
-        // Add the welcome panel to the center of the WelcomePage
-        add(welcomePanel, constraints);
+        // Create the login button
+        MyButton loginButton = new MyButton("Login");
+        loginButton.addActionListener(this::loginButtonActionPerformed);
 
-        // Create constraints for button alignment
-        constraints.gridy = 1;
-        constraints.insets = new Insets(10, 0, 0, 0);
+        // Create the signup button
+        MyButton signupButton = new MyButton("Signup");
+        signupButton.addActionListener(this::signupButtonActionPerformed);
 
-        // Create a panel for the buttons
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton loginButton = new JButton("Login");
-        JButton signupButton = new JButton("Signup");
+        // Create the panel for the buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(loginButton);
         buttonPanel.add(signupButton);
 
-        // Add the button panel below the welcome panel
-        add(buttonPanel, constraints);
-
-        // Add action listeners to the buttons
-        loginButton.addActionListener(this::loginButtonActionPerformed);
-        signupButton.addActionListener(this::signupButtonActionPerformed);
+        JPanel layoutPanel = new JPanel(new GridBagLayout());
+        layoutPanel.setBackground(Color.WHITE);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        layoutPanel.add(imageLabel, constraints);
+        layoutPanel.setMaximumSize(new Dimension(600, 400));
+        add(welcomeLabel, BorderLayout.NORTH);
+        add(layoutPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                resizeImage();
+            }
+        });
     }
 
     private void loginButtonActionPerformed(ActionEvent e) {
@@ -65,4 +83,23 @@ public class WelcomePage extends JPanel {
         appNavigation.showSignupPage();
     }
 
+    private void resizeImage() {
+        ImageIcon imageIcon = (ImageIcon) imageLabel.getIcon();
+        if (imageIcon != null) {
+            // Get the current size of the image label
+            int width = imageLabel.getWidth();
+            int height = imageLabel.getHeight();
+
+            // Scale the image to fit the label's size while preserving aspect ratio
+            ImageIcon scaledImageIcon = new ImageIcon(
+                    imageIcon.getImage().getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH));
+            imageIcon.getImage().flush();
+            imageLabel.setIcon(scaledImageIcon);
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(600, 400); // Set the preferred size of the panel
+    }
 }
