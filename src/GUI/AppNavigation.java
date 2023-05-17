@@ -17,6 +17,9 @@ public class AppNavigation implements IAppNavigation {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
 
+        ImageIcon icon = new ImageIcon("src\\resources\\images\\diary.png");
+        frame.setIconImage(icon.getImage());
+
         welcomePage = new WelcomePage(this);
         loginPage = new LoginPage(this);
         signupPage = new SignupPage(this);

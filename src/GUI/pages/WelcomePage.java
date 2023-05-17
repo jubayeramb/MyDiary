@@ -37,7 +37,7 @@ public class WelcomePage extends JPanel {
 
         // Create the image label
         imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/images/diary.png"));
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/images/wlc-img.png"));
         imageLabel.setIcon(imageIcon);
 
         // Create the login button
