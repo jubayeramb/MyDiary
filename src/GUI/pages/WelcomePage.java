@@ -37,7 +37,7 @@ public class WelcomePage extends JPanel {
 
         // Create the image label
         imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/images/diary1.png"));
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/images/diary.png"));
         imageLabel.setIcon(imageIcon);
 
         // Create the login button
@@ -63,7 +63,7 @@ public class WelcomePage extends JPanel {
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
         layoutPanel.add(imageLabel, constraints);
-        layoutPanel.setMaximumSize(new Dimension(600, 400));
+        layoutPanel.setMaximumSize(new Dimension(400, 200));
         add(welcomeLabel, BorderLayout.NORTH);
         add(layoutPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);

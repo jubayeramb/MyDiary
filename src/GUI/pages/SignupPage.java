@@ -43,7 +43,7 @@ public class SignupPage extends JPanel {
         JLabel signupLabel = new JLabel("Signup");
         signupLabel.setFont(new Font("Arial", Font.BOLD, 36));
         signupLabel.setHorizontalAlignment(JLabel.CENTER);
-        signupLabel.setBorder(new EmptyBorder(0, 0, 50, 0));
+        signupLabel.setBorder(new EmptyBorder(0, 0, 20, 0));
 
         JPanel signupPanel = new JPanel(new GridLayout(8, 2, -100, 10));
         JPanel signupPanelWrapper = new JPanel(new FlowLayout());
@@ -93,7 +93,7 @@ public class SignupPage extends JPanel {
         mainPanel.add(signupLabel, BorderLayout.NORTH);
         mainPanel.add(signupPanelWrapper, BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-        mainPanel.setBorder(new EmptyBorder(50, 50, 50, 50));
+        mainPanel.setBorder(new EmptyBorder(30, 50, 30, 50));
 
         add(mainPanel, BorderLayout.CENTER);
 
