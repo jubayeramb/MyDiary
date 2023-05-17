@@ -3,20 +3,19 @@ package data.entities;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import data.enums.Priority;
+
 public class Task {
     private UUID id;
     private UUID userId;
     private String title;
     private String description;
     private boolean isCompleted;
-    private int priority;
+    private Priority priority;
     private Timestamp dueDate;
     private Timestamp createdAt;
 
-    public Task(String title, String description, boolean isCompleted, Timestamp dueDate, int priority) {
-        if (priority < 1 || priority > 5) {
-            throw new IllegalArgumentException("Priority must be between 1 and 3");
-        }
+    public Task(String title, String description, boolean isCompleted, Timestamp dueDate, Priority priority) {
         this.id = UUID.randomUUID();
         this.title = title;
         this.description = description;
@@ -74,14 +73,11 @@ public class Task {
         this.userId = userId;
     }
 
-    public int getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
-        if (priority < 1 || priority > 5) {
-            throw new IllegalArgumentException("Priority must be between 1 and 3");
-        }
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 

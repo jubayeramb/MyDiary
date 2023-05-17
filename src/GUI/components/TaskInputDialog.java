@@ -8,11 +8,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class TaskInputDialog extends JDialog {
-    private InputField titleField;
+    private MyInputField titleField;
     private MyTextAreaField descriptionArea;
     private JComboBox<Priority> priorityComboBox;
     private JCheckBox completedCheckBox;
     private Priority selectedPriority;
+    private boolean clickedOk = false;
 
     public TaskInputDialog(Frame owner) {
         super(owner, "Add Task", true);
@@ -20,7 +21,7 @@ public class TaskInputDialog extends JDialog {
 
         // Create form components
         JLabel titleLabel = new JLabel("Title:");
-        titleField = new InputField();
+        titleField = new MyInputField();
 
         JLabel descriptionLabel = new JLabel("Description:");
         descriptionArea = new MyTextAreaField();
@@ -88,8 +89,13 @@ public class TaskInputDialog extends JDialog {
         return completedCheckBox.isSelected();
     }
 
+    public boolean isClickedOk() {
+        return clickedOk;
+    }
+
     private void addButtonActionPerformed(ActionEvent e) {
         selectedPriority = (Priority) priorityComboBox.getSelectedItem();
+        clickedOk = true;
         dispose();
     }
 
