@@ -28,7 +28,7 @@ public class Note {
         return content;
     }
 
-    public Timestamp getTimestamp() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
