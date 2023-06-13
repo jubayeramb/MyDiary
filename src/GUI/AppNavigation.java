@@ -14,7 +14,7 @@ public class AppNavigation extends JFrame implements IAppNavigation {
     public AppNavigation() {
         super("My Diary");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(800, 800);
 
         ImageIcon imageIcon = new ImageIcon(getClass().getResource("/assets/images/diary.png"));
         setIconImage(imageIcon.getImage());

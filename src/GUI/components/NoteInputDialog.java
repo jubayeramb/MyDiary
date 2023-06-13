@@ -27,7 +27,7 @@ public class NoteInputDialog extends JDialog {
         JLabel titleLabel = new JLabel("Title:");
         titleField = new MyInputField();
 
-        JLabel descriptionLabel = new JLabel("Description:");
+        JLabel descriptionLabel = new JLabel("Content:");
         contentArea = new MyTextAreaField();
         JScrollPane descriptionScrollPane = new JScrollPane(contentArea);
 
