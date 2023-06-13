@@ -29,7 +29,7 @@ public class WelcomePage extends JPanel {
         setBackground(Color.WHITE);
 
         // Create the welcome label
-        JLabel welcomeLabel = new JLabel("My Diary!");
+        JLabel welcomeLabel = new JLabel("My Diary");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 36));
         welcomeLabel.setForeground(Color.DARK_GRAY);
         welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -37,7 +37,7 @@ public class WelcomePage extends JPanel {
 
         // Create the image label
         imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resources/images/wlc-img.png"));
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/assets/images/wlc-img.png"));
         imageLabel.setIcon(imageIcon);
 
         // Create the login button
@@ -67,23 +67,17 @@ public class WelcomePage extends JPanel {
         add(welcomeLabel, BorderLayout.NORTH);
         add(layoutPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                resizeImage();
-            }
-        });
     }
 
     private void loginButtonActionPerformed(ActionEvent e) {
-        appNavigation.showLoginPage();
+        appNavigation.showPage(IAppNavigation.LOGIN_PAGE);
     }
 
     private void signupButtonActionPerformed(ActionEvent e) {
-        appNavigation.showSignupPage();
+        appNavigation.showPage(IAppNavigation.SIGNUP_PAGE);
     }
 
-    private void resizeImage() {
+    public void resizeImage() {
         ImageIcon imageIcon = (ImageIcon) imageLabel.getIcon();
         if (imageIcon != null) {
             // Get the current size of the image label

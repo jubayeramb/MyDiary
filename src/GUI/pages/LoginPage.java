@@ -84,14 +84,14 @@ public class LoginPage extends JPanel {
     }
 
     private void loginButtonActionPerformed(ActionEvent e) {
-        appNavigation.showMainAppPage();
+        appNavigation.showPage(IAppNavigation.MAIN_APP_PAGE);
     }
 
     private void signupButtonActionPerformed(ActionEvent e) {
-        appNavigation.showSignupPage();
+        appNavigation.showPage(IAppNavigation.SIGNUP_PAGE);
     }
 
     private void backButtonActionPerformed(ActionEvent e) {
-        appNavigation.showWelcomePage();
+        appNavigation.showPage(IAppNavigation.WELCOME_PAGE);
     }
 }

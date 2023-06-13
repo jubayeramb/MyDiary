@@ -5,66 +5,64 @@ import javax.swing.*;
 import GUI.pages.*;
 import data.interfaces.IAppNavigation;
 
-public class AppNavigation implements IAppNavigation {
-    private JFrame frame;
+public class AppNavigation extends JFrame implements IAppNavigation {
     private WelcomePage welcomePage;
     private LoginPage loginPage;
     private SignupPage signupPage;
     private MainAppPage mainAppPage;
 
     public AppNavigation() {
-        frame = new JFrame("My Diary");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        super("My Diary");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
 
-        ImageIcon icon = new ImageIcon("src\\resources\\images\\diary.png");
-        frame.setIconImage(icon.getImage());
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/assets/images/diary.png"));
+        setIconImage(imageIcon.getImage());
 
         welcomePage = new WelcomePage(this);
         loginPage = new LoginPage(this);
         signupPage = new SignupPage(this);
         mainAppPage = new MainAppPage(this);
 
-        showWelcomePage();
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                welcomePage.resizeImage();
+            }
+        });
+
+        showPage(WELCOME_PAGE);
     }
 
     @Override
-    public void showWelcomePage() {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(welcomePage);
-        frame.revalidate();
-        frame.repaint();
-    }
+    public void showPage(int pageName) {
+        JPanel pageToShow = null;
+        switch (pageName) {
+            case WELCOME_PAGE:
+                pageToShow = welcomePage;
+                break;
+            case LOGIN_PAGE:
+                pageToShow = loginPage;
+                break;
+            case SIGNUP_PAGE:
+                pageToShow = signupPage;
+                break;
+            case MAIN_APP_PAGE:
+                pageToShow = mainAppPage;
+                break;
+        }
 
-    @Override
-    public void showLoginPage() {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(loginPage);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    @Override
-    public void showSignupPage() {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(signupPage);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    @Override
-    public void showMainAppPage() {
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(mainAppPage);
-        frame.revalidate();
-        frame.repaint();
+        if (pageToShow != null) {
+            getContentPane().removeAll();
+            getContentPane().add(pageToShow);
+            revalidate();
+            repaint();
+        }
     }
 
     @Override
     public void run() {
         SwingUtilities.invokeLater(() -> {
-            frame.setVisible(true);
+            setVisible(true);
         });
     }
-
 }

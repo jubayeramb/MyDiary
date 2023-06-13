@@ -65,7 +65,7 @@ public class MainAppPage extends JPanel {
     }
 
     private void logoutButtonActionPerformed(ActionEvent e) {
-        appNavigation.showWelcomePage();
+        appNavigation.showPage(IAppNavigation.WELCOME_PAGE);
     }
 
     private void refreshButtonActionPerformed(ActionEvent e) {

@@ -137,15 +137,15 @@ public class SignupPage extends JPanel {
         System.out.println("Password: " + password);
         System.out.println("Confirm Password: " + confirmPassword);
 
-        appNavigation.showMainAppPage();
+        appNavigation.showPage(IAppNavigation.MAIN_APP_PAGE);
     }
 
     private void loginButtonActionPerformed(ActionEvent e) {
-        appNavigation.showLoginPage();
+        appNavigation.showPage(IAppNavigation.LOGIN_PAGE);
     }
 
     private void backButtonActionPerformed(ActionEvent e) {
-        appNavigation.showWelcomePage();
+        appNavigation.showPage(IAppNavigation.WELCOME_PAGE);
     }
 
 }
