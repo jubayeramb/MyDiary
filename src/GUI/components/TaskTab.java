@@ -1,10 +1,10 @@
 package GUI.components;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,23 +14,59 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+
 import data.entities.Task;
 import data.enums.Priority;
 
 public class TaskTab extends JPanel {
     private MyTable taskTable;
     private DefaultTableModel taskTableModel;
+    private MyInputField searchField;
+    private boolean isSearching = false;
     private List<Task> taskList;
 
     public TaskTab() {
         setLayout(new BorderLayout());
 
-        // Create the "Add Task" button and add it to the top right corner
+        // Add Task button
         MyButton addTaskButton = new MyButton("Add Task");
         addTaskButton.addActionListener(this::addTaskButtonActionPerformed);
 
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        topPanel.add(addTaskButton);
+        // Add a search bar
+        searchField = new MyInputField(300, 30);
+        searchField.setLayout(new BorderLayout());
+        searchField.addActionListener(this::searchButtonActionPerformed);
+
+        MyButton searchButton = new MyButton("Search");
+        searchButton.addActionListener(this::searchButtonActionPerformed);
+
+        JLabel searchIcon = new JLabel();
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/assets/images/search-icon.png"));
+        Image image = imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        searchIcon.setIcon(new ImageIcon(image));
+        searchIcon.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+        searchIcon.setBackground(new Color(0, 0, 0, 50));
+        searchField.add(searchIcon, BorderLayout.EAST);
+
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.add(searchField, BorderLayout.WEST);
+        searchPanel.add(searchButton, BorderLayout.EAST);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.add(addTaskButton, BorderLayout.EAST);
+        topPanel.add(searchPanel, BorderLayout.WEST);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
 
         // Create the table model and table for displaying tasks
         taskTableModel = new DefaultTableModel(new Object[] { "Title", "Desc.", "Due Date", "Priority", "Done" }, 0);
@@ -132,13 +168,49 @@ public class TaskTab extends JPanel {
 
     }
 
+    private void searchButtonActionPerformed(ActionEvent e) {
+        String searchText = searchField.getText();
+        if (isSearching && (searchText == null || searchText.isEmpty())) {
+            isSearching = false;
+            searchField.setText("");
+            // Clear the table
+            taskTableModel.setRowCount(0);
+            for (Task task : taskList) {
+                taskTableModel.addRow(
+                        new Object[] { task.getTitle(), task.getDescription(), task.getDueDate(), task.getPriority(),
+                                task.isCompleted() });
+            }
+            return;
+        } else if (searchText == null || searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Search text cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Clear the table
+        taskTableModel.setRowCount(0);
+        // Add the filtered tasks to the table
+        for (Task task : taskList) {
+            searchText = searchText.trim().toLowerCase();
+            boolean isMatched = task.getTitle().toLowerCase().contains(searchText) || task.getDescription()
+                    .toLowerCase().contains(searchText)
+                    || task.getPriority().toString().toLowerCase().contains(searchText);
+            if (isMatched) {
+                taskTableModel.addRow(new Object[] { task.getTitle(), task.getDescription(), task.getDueDate(),
+                        task.getPriority(), task.isCompleted() });
+            }
+        }
+        isSearching = true;
+    }
+
     private List<Task> createDummyTasks() {
         List<Task> tasks = new ArrayList<Task>();
         tasks.add(new Task("OOP Lab Final", "Get prepared before 15th June", false,
-                Timestamp.valueOf(LocalDateTime.now()), Priority.LOW));
-        tasks.add(new Task("MAT-201 CT", "Do some maths", true, Timestamp.valueOf(LocalDateTime.now()), Priority.HIGH));
-        tasks.add(new Task("Task 3", "Description 3", false, Timestamp.valueOf(LocalDateTime.now()), Priority.MEDIUM));
-        tasks.add(new Task("Task 4", "Description 3", true, Timestamp.valueOf(LocalDateTime.now()), Priority.MEDIUM));
+                Timestamp.valueOf(LocalDateTime.of(2023, 06, 14, 22, 00)), Priority.HIGH));
+        tasks.add(new Task("MAT-201 CT", "Do some maths", true,
+                Timestamp.valueOf(LocalDateTime.of(2023, 06, 15, 12, 00)), Priority.MEDIUM));
+        tasks.add(new Task("CSE-201 Presentation", "Take some prep on Intreface & Multithreading", false,
+                Timestamp.valueOf(LocalDateTime.of(2023, 06, 16, 8, 00)), Priority.LOW));
+        tasks.add(new Task("CHE Lab Final", "Take some prep on CHE lab exp.", true,
+                Timestamp.valueOf(LocalDateTime.of(2023, 06, 15, 22, 00)), Priority.HIGH));
         return tasks;
     }
 
