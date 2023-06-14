@@ -79,9 +79,9 @@ public class TaskInputDialog extends JDialog {
         return clickedOk;
     }
 
-    public Timestamp getDueDate() {
+    public Timestamp getDueDate() throws NullPointerException {
         LocalDate selectedDate = dueDatePicker.getDate();
-        LocalTime selectedTime = dueTimePicker.getTime();
+        LocalTime selectedTime = dueTimePicker.getTime() == null ? LocalTime.now() : dueTimePicker.getTime();
         LocalDateTime selectedDateTime = LocalDateTime.of(selectedDate, selectedTime);
         return Timestamp.valueOf(selectedDateTime);
     }

@@ -93,11 +93,7 @@ public class TaskTab extends JPanel {
 
         // Add dummy tasks to the table
         taskList = createDummyTasks();
-        for (Task task : taskList) {
-            taskTableModel.addRow(
-                    new Object[] { task.getTitle(), task.getDescription(), task.getDueDate(), task.getPriority(),
-                            task.isCompleted() });
-        }
+        renderTaskTable();
     }
 
     private void addTaskButtonActionPerformed(ActionEvent e) {
@@ -109,9 +105,17 @@ public class TaskTab extends JPanel {
             String description = dialog.getDescription();
             boolean completed = dialog.isCompleted();
             Priority priority = dialog.getPriority();
-            Timestamp dueDate = dialog.getDueDate();
+            Timestamp dueDate;
             if (title == null || title.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Title cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Title cannot be empty", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                dueDate = dialog.getDueDate();
+            } catch (NullPointerException ex) {
+                JOptionPane.showMessageDialog(this, "Due Date cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             // Create a new task object
@@ -119,9 +123,7 @@ public class TaskTab extends JPanel {
             taskList.add(newTask);
 
             // Add the task to the table
-            taskTableModel.addRow(new Object[] { newTask.getTitle(), newTask.getDescription(), newTask.getDueDate(),
-                    newTask.getPriority(),
-                    newTask.isCompleted() });
+            renderTaskTable();
             System.out.println("Added task: " + newTask.getTitle() + " " + newTask.getDueDate() + " "
                     + newTask.getPriority() + " " + newTask.isCompleted() + " " + newTask.getDueDate());
         }
@@ -157,15 +159,11 @@ public class TaskTab extends JPanel {
             task.setDueDate(newDueDate);
 
             // Update the table
-            taskTableModel.setValueAt(newTitle, row, 0);
-            taskTableModel.setValueAt(newDescription, row, 1);
-            taskTableModel.setValueAt(newDueDate, row, 2);
-            taskTableModel.setValueAt(newPriority, row, 3);
-            taskTableModel.setValueAt(newCompleted, row, 4);
+            renderTaskTable();
             System.out.println("Updated task: " + task.getTitle() + " " + task.getDueDate() + " "
                     + task.getPriority() + " " + task.isCompleted() + " " + task.getDueDate());
         }
-
+        taskTable.clearSelection();
     }
 
     private void searchButtonActionPerformed(ActionEvent e) {
@@ -201,6 +199,26 @@ public class TaskTab extends JPanel {
         isSearching = true;
     }
 
+    private void renderTaskTable() {
+        // Sort the taskList based on priority and due date
+        taskList.sort((t1, t2) -> {
+            int priorityComparison = t2.getPriority().compareTo(t1.getPriority());
+            if (priorityComparison != 0) {
+                return priorityComparison;
+            }
+            return t1.getDueDate().compareTo(t2.getDueDate());
+        });
+
+        // Clear the table
+        taskTableModel.setRowCount(0);
+
+        for (Task task : taskList) {
+            taskTableModel.addRow(
+                    new Object[] { task.getTitle(), task.getDescription(), task.getDueDate(), task.getPriority(),
+                            task.isCompleted() });
+        }
+    }
+
     private List<Task> createDummyTasks() {
         List<Task> tasks = new ArrayList<Task>();
         tasks.add(new Task("OOP Lab Final", "Get prepared before 15th June", false,
@@ -211,6 +229,7 @@ public class TaskTab extends JPanel {
                 Timestamp.valueOf(LocalDateTime.of(2023, 06, 16, 8, 00)), Priority.LOW));
         tasks.add(new Task("CHE Lab Final", "Take some prep on CHE lab exp.", true,
                 Timestamp.valueOf(LocalDateTime.of(2023, 06, 15, 22, 00)), Priority.HIGH));
+
         return tasks;
     }
 
