@@ -15,6 +15,16 @@ public class Task {
     private Timestamp dueDate;
     private Timestamp createdAt;
 
+    public Task(UUID id, String title, String description, boolean isCompleted, Timestamp dueDate, Priority priority) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.isCompleted = isCompleted;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
+
     public Task(String title, String description, boolean isCompleted, Timestamp dueDate, Priority priority) {
         this.id = UUID.randomUUID();
         this.title = title;
@@ -63,6 +73,10 @@ public class Task {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void setDueDate(Timestamp dueDate) {

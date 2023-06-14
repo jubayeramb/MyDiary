@@ -124,8 +124,8 @@ public class SignupPage extends JPanel {
         String lastName = lastNameField.getText();
         String email = emailField.getText();
         String phone = phoneField.getText();
-        String password = passwordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
+        String password = new String(passwordField.getPassword());
+        String confirmPassword = new String(confirmPasswordField.getPassword());
 
         // Perform signup logic here
         // You can replace the print statements with your own logic
