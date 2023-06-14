@@ -184,7 +184,8 @@ public class NoteTab extends JPanel {
         topPanel.add(editButton);
 
         // Create the content label
-        JLabel contentLabel = new JLabel("<html>" + note.getContent().replaceAll("\n", "<br/>") + "</html>");
+        JLabel contentLabel = new JLabel(
+                "<html>" + note.getContent().replaceAll("\n", "<br/>") + "</html>");
         contentLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Create a scroll pane for the content label
@@ -196,7 +197,7 @@ public class NoteTab extends JPanel {
         // Add components to the dialog
         viewDialog.add(topPanel, BorderLayout.NORTH);
         viewDialog.add(scrollPane, BorderLayout.CENTER);
-        viewDialog.setPreferredSize(new Dimension(600, 400));
+        viewDialog.setPreferredSize(new Dimension(700, 500));
         viewDialog.pack();
         viewDialog.setLocationRelativeTo(this);
         viewDialog.setVisible(true);

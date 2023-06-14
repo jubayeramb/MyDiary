@@ -4,10 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -61,11 +61,17 @@ public class NoteInputDialog extends JDialog {
     private void createUIComponents(String btnText) {
         // Create form components
         JLabel titleLabel = new JLabel("Title:");
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        titlePanel.add(titleLabel);
         titleField = new MyInputField();
 
-        JLabel descriptionLabel = new JLabel("Content:");
+        JLabel contJLabel = new JLabel("Content:");
+        JPanel contentLabelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        contentLabelPanel.add(contJLabel);
+
         contentArea = new MyTextAreaField();
         JScrollPane descriptionScrollPane = new JScrollPane(contentArea);
+        descriptionScrollPane.setPreferredSize(new Dimension(350, 300));
 
         // Create the buttons
         JButton addButton = new JButton(btnText.isEmpty() ? "Add" : btnText);
@@ -74,11 +80,12 @@ public class NoteInputDialog extends JDialog {
         JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
-        // Create the panel for the form
-        JPanel formPanel = new JPanel(new GridLayout(4, 1, 0, 0));
-        formPanel.add(titleLabel);
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+        formPanel.add(titlePanel);
         formPanel.add(titleField);
-        formPanel.add(descriptionLabel);
+        formPanel.add(new JLabel(" "));
+        formPanel.add(contentLabelPanel);
         formPanel.add(descriptionScrollPane);
 
         // Create the panel for the buttons
@@ -94,7 +101,7 @@ public class NoteInputDialog extends JDialog {
 
         add(contentPanel, BorderLayout.CENTER);
 
-        setPreferredSize(new Dimension(400, 250));
+        setPreferredSize(new Dimension(400, 450));
     }
 
 }
