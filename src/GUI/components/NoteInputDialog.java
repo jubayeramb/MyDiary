@@ -20,9 +20,45 @@ public class NoteInputDialog extends JDialog {
     private boolean clickedOk = false;
 
     public NoteInputDialog(Frame owner) {
-        super(owner, "Add Task", true);
+        super(owner, "Add Note", true);
         setLayout(new BorderLayout());
+        createUIComponents("Add");
+        pack();
+        setLocationRelativeTo(owner);
+    }
 
+    public NoteInputDialog(Frame owner, String title, String content) {
+        super(owner, "Update Note", true);
+        setLayout(new BorderLayout());
+        createUIComponents("Update");
+        titleField.setText(title);
+        contentArea.setText(content);
+        pack();
+        setLocationRelativeTo(owner);
+    }
+
+    public String getTitle() {
+        return titleField.getText();
+    }
+
+    public String getContent() {
+        return contentArea.getText();
+    }
+
+    public boolean isClickedOk() {
+        return clickedOk;
+    }
+
+    private void addButtonActionPerformed(ActionEvent e) {
+        clickedOk = true;
+        dispose();
+    }
+
+    private void cancelButtonActionPerformed(ActionEvent e) {
+        dispose();
+    }
+
+    private void createUIComponents(String btnText) {
         // Create form components
         JLabel titleLabel = new JLabel("Title:");
         titleField = new MyInputField();
@@ -32,7 +68,7 @@ public class NoteInputDialog extends JDialog {
         JScrollPane descriptionScrollPane = new JScrollPane(contentArea);
 
         // Create the buttons
-        JButton addButton = new JButton("Add");
+        JButton addButton = new JButton(btnText.isEmpty() ? "Add" : btnText);
         addButton.addActionListener(this::addButtonActionPerformed);
 
         JButton cancelButton = new JButton("Cancel");
@@ -59,29 +95,6 @@ public class NoteInputDialog extends JDialog {
         add(contentPanel, BorderLayout.CENTER);
 
         setPreferredSize(new Dimension(400, 250));
-
-        pack();
-        setLocationRelativeTo(owner);
     }
 
-    public String getTitle() {
-        return titleField.getText();
-    }
-
-    public String getContent() {
-        return contentArea.getText();
-    }
-
-    public boolean isClickedOk() {
-        return clickedOk;
-    }
-
-    private void addButtonActionPerformed(ActionEvent e) {
-        clickedOk = true;
-        dispose();
-    }
-
-    private void cancelButtonActionPerformed(ActionEvent e) {
-        dispose();
-    }
 }
