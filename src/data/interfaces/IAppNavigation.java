@@ -8,6 +8,15 @@ public interface IAppNavigation {
 
     void showPage(int pageName);
 
+    /**
+     * @param username
+     * @param password
+     * @return boolean
+     */
+    boolean login(String username, String password);
+
+    boolean logout();
+
     void run();
 
 }

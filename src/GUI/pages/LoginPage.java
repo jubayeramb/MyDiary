@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -84,6 +85,21 @@ public class LoginPage extends JPanel {
     }
 
     private void loginButtonActionPerformed(ActionEvent e) {
+
+        String password = new String(passwordField.getPassword()).trim(), username = usernameField.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username & Password can't be empty", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!appNavigation.login(username, password)) {
+            JOptionPane.showMessageDialog(this, "Username or Password is incorrect", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         appNavigation.showPage(IAppNavigation.MAIN_APP_PAGE);
     }
 

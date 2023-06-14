@@ -10,6 +10,7 @@ public class AppNavigation extends JFrame implements IAppNavigation {
     private LoginPage loginPage;
     private SignupPage signupPage;
     private MainAppPage mainAppPage;
+    public static boolean isAuth = false;
 
     public AppNavigation() {
         super("My Diary");
@@ -36,19 +37,25 @@ public class AppNavigation extends JFrame implements IAppNavigation {
     @Override
     public void showPage(int pageName) {
         JPanel pageToShow = null;
-        switch (pageName) {
-            case WELCOME_PAGE:
-                pageToShow = welcomePage;
-                break;
-            case LOGIN_PAGE:
-                pageToShow = loginPage;
-                break;
-            case SIGNUP_PAGE:
-                pageToShow = signupPage;
-                break;
-            case MAIN_APP_PAGE:
-                pageToShow = mainAppPage;
-                break;
+
+        if (!isAuth && pageName == MAIN_APP_PAGE) {
+            JOptionPane.showMessageDialog(this, "You are not logged in!", "Error", JOptionPane.ERROR_MESSAGE);
+            pageToShow = loginPage;
+        } else {
+            switch (pageName) {
+                case WELCOME_PAGE:
+                    pageToShow = welcomePage;
+                    break;
+                case LOGIN_PAGE:
+                    pageToShow = loginPage;
+                    break;
+                case SIGNUP_PAGE:
+                    pageToShow = signupPage;
+                    break;
+                case MAIN_APP_PAGE:
+                    pageToShow = mainAppPage;
+                    break;
+            }
         }
 
         if (pageToShow != null) {
@@ -57,6 +64,22 @@ public class AppNavigation extends JFrame implements IAppNavigation {
             revalidate();
             repaint();
         }
+    }
+
+    @Override
+    public boolean login(String username, String password) {
+        if (username.equals("jubayer") && password.equals("admin123")) {
+            isAuth = true;
+        } else {
+            isAuth = false;
+        }
+        return isAuth;
+    }
+
+    @Override
+    public boolean logout() {
+        isAuth = false;
+        return isAuth;
     }
 
     @Override
